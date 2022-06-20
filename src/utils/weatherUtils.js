@@ -23,6 +23,8 @@ const formatCurrentWeather = (data) => {
     wind: { speed },
   } = data;
 
+  const {main:details ,icon}=weather[0]
+
   return {
     lat,
     lon,
@@ -36,7 +38,8 @@ const formatCurrentWeather = (data) => {
     country,
     sunrise,
     sunset,
-    weather,
+    details,
+    icon,
     speed,
   };
 };
@@ -46,4 +49,9 @@ const getFormattedWeatherData = async (searchParams) => {
     "weather",
     searchParams
   ).then(formatCurrentWeather);
+
+  return formattedCurrentWeather
 };
+
+
+export default getFormattedWeatherData
