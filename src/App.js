@@ -12,7 +12,7 @@ import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
 function App() {
-  const [query, setQuery] = useState({ q: "accra" });
+  const [query, setQuery] = useState({ q: null });
   const [units, setUnits] = useState("metric");
   const [weather, setWeather] = useState(null);
 
@@ -22,6 +22,8 @@ function App() {
 
       toast.info('fetching weather for ' + message)
       await getFormattedWeatherData({ ...query, units }).then((data) => {
+toast.success(`Successfully fetched weather for ${data.name}, ${data.country}.`)
+
         setWeather(data);
       });
     };
@@ -53,7 +55,7 @@ function App() {
       )}
 
 
-    <ToastContainer autoClose={10000} theme='colored' newestOnTop={true}/>
+    <ToastContainer autoClose={6000} theme='colored' newestOnTop={true}/>
     </div>
   );
 }
