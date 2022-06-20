@@ -1,32 +1,42 @@
-import './App.css';
+import "./App.css";
 
-import TopButtons from './components/TopButtons';
-import Inputs from './components/Inputs';
-import TimeAndLocation from './components/TimeAndLocation';
-import TemparatureAndDetails from './components/TemparatureAndDetails';
-import Forcast from './components/Forcast';
-import getFormattedWeatherData from './utils/weatherUtils';
+import TopButtons from "./components/TopButtons";
+import Inputs from "./components/Inputs";
+import TimeAndLocation from "./components/TimeAndLocation";
+import TemparatureAndDetails from "./components/TemparatureAndDetails";
+import Forcast from "./components/Forcast";
+import getFormattedWeatherData from "./utils/weatherUtils";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [query, setQuery] = useState({ q: "accra" });
+  const [units, setUnits] = useState("metric");
+  const [weather, setWeather] = useState(null);
 
-const fetchWeather = async () =>{
-  const data = await getFormattedWeatherData({q:'accra'});
-  console.log(data);
-}
-fetchWeather()
+  useEffect(() => {
+    const fetchWeather = async () => {
+      await getFormattedWeatherData(...query, units).then((data) => {
+        setWeather(data);
+      });
+    };
 
+    fetchWeather();
+  }, [query, units]);
 
   return (
- 
- <div className='mx-auto max-w-screen-md mt-4 py-5 px-32 bg-gradient-to-br from-cyan-700 to-blue-700 h-fit shadow-xl shadow-gray-400'>
-<TopButtons />
-<Inputs />
-<TimeAndLocation />
-<TemparatureAndDetails />
-<Forcast  title='hourly forcast'/>
-<Forcast  title='daily forcast'/>
- </div>
+    <div className="mx-auto max-w-screen-md mt-4 py-5 px-32 bg-gradient-to-br from-cyan-700 to-blue-700 h-fit shadow-xl shadow-gray-400">
+      <TopButtons />
+      <Inputs />
 
+      {weather && (
+        <div>
+          <TimeAndLocation weather={weather} />
+          <TemparatureAndDetails weather={weather}/>
+          <Forcast title="hourly forcast" />
+          <Forcast title="daily forcast" />
+        </div>
+      )}
+    </div>
   );
 }
 
